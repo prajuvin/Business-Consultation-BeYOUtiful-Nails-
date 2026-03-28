@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeYOUtiful Nails 705 — Business Consultation</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💅</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 0; font-family: 'Inter', 'SF Pro Display', system-ui, sans-serif; }
+  * { box-sizing: border-box; }
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: #FDF7F8; }
+  ::-webkit-scrollbar-thumb { background: #D4B5BD; border-radius: 3px; }
+  @keyframes floatNail1 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    25% { transform: translate(15px, -30px) rotate(8deg); }
+    50% { transform: translate(-10px, -55px) rotate(-5deg); }
+    75% { transform: translate(20px, -25px) rotate(12deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  @keyframes floatNail2 {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(-20px, -40px) rotate(-10deg); }
+    66% { transform: translate(10px, -20px) rotate(6deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+  .float-nail {
+    position: fixed;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    user-select: none;
+  }
+  .float-nail-1 {
+    bottom: 12%;
+    right: 6%;
+    font-size: 90px;
+    animation: floatNail1 18s ease-in-out infinite;
+  }
+  .float-nail-2 {
+    top: 30%;
+    left: 4%;
+    font-size: 65px;
+    animation: floatNail2 22s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+<div class="float-nail float-nail-1">💅</div>
+<div class="float-nail float-nail-2">💅</div>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script>
+var useState = React.useState;
+
+// ─── Colors ───
+const C = {
+  bg: "#FAFBFC",
+  s1: "#FFFFFF",
+  s2: "#F4F6F8",
+  s3: "#EDF0F4",
+  b1: "#E2E7ED",
+  b2: "#CBD2DC",
+  t1: "#1A202C",
+  t2: "#4A5568",
+  t3: "#718096",
+  t4: "#A0AEC0",
+  acc: "#5B6CF0",
+  accL: "#818CF8",
+  accBg: "rgba(91,108,240,0.06)",
+  red: "#E53E3E",
+  redBg: "#FFF5F5",
+  redBd: "#FED7D7",
+  org: "#DD6B20",
+  orgBg: "#FFFAF0",
+  orgBd: "#FEEBC8",
+  grn: "#38A169",
+  grnBg: "#F0FFF4",
+  grnBd: "#C6F6D5",
+  pur: "#805AD5",
+  purBg: "#FAF5FF"
+};
+function ScoreBar({
+  label,
+  score,
+  max
+}) {
+  var pct = Math.round(score / (max || 100) * 100);
+  var col = pct >= 70 ? C.grn : pct >= 40 ? C.org : C.red;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      justifyContent: "space-between",
+      marginBottom: 4
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      fontWeight: 500
+    }
+  }, label), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 13,
+      fontWeight: 700,
+      color: col
+    }
+  }, score, "/100")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: 8,
+      background: C.s3,
+      borderRadius: 4,
+      overflow: "hidden"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      height: "100%",
+      width: pct + "%",
+      background: col,
+      borderRadius: 4,
+      transition: "width 0.8s ease"
+    }
+  })));
+}
+function Card({
+  children,
+  style
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: Object.assign({
+      background: C.s1,
+      borderRadius: 12,
+      padding: "20px 24px",
+      boxShadow: "0 1px 3px rgba(0,0,0,0.06)",
+      border: "1px solid " + C.b1
+    }, style || {})
+  }, children);
+}
+function SectionTitle({
+  children,
+  icon
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      marginBottom: 14
+    }
+  }, icon && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 18
+    }
+  }, icon), /*#__PURE__*/React.createElement("h3", {
+    style: {
+      margin: 0,
+      fontSize: 15,
+      fontWeight: 700,
+      color: C.t1,
+      letterSpacing: -0.3
+    }
+  }, children));
+}
+function ConsultationDashboard() {
+  var [tab, setTab] = useState("overview");
+  var tabs = [{
+    id: "overview",
+    l: "Overview",
+    i: "\u{1F4CA}"
+  }, {
+    id: "problems",
+    l: "What's Going Wrong",
+    i: "\u{1F6A8}"
+  }, {
+    id: "solutions",
+    l: "What I'll Fix (Free)",
+    i: "\u2728"
+  }, {
+    id: "growth",
+    l: "Growth Plan",
+    i: "\u{1F680}"
+  }, {
+    id: "ai",
+    l: "AI Tools",
+    i: "\u{1F916}"
+  }, {
+    id: "ads",
+    l: "Facebook/Instagram Ads",
+    i: "\u{1F4F1}"
+  }, {
+    id: "transparency",
+    l: "How It All Works",
+    i: "\u{1F50D}"
+  }];
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minHeight: "100vh",
+      background: C.bg,
+      color: C.t1,
+      fontFamily: "'Inter', 'SF Pro Display', system-ui, sans-serif"
+    }
+  }, /*#__PURE__*/React.createElement("style", null, "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');\n*{box-sizing:border-box}\n::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:#CBD2DC;border-radius:3px}"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.s1,
+      borderBottom: "1px solid " + C.b1,
+      padding: "16px 24px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 960,
+      margin: "0 auto",
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 600,
+      color: C.acc,
+      textTransform: "uppercase",
+      letterSpacing: 2,
+      marginBottom: 2
+    }
+  }, "Free Business Consultation"), /*#__PURE__*/React.createElement("h1", {
+    style: {
+      margin: 0,
+      fontSize: 22,
+      fontWeight: 800,
+      letterSpacing: -0.5
+    }
+  }, "BeYOUtiful Nails 705"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t3,
+      marginTop: 2
+    }
+  }, "464 Lakeshore Drive, North Bay, ON ", "\u00B7", " 249-358-3900 ", "\u00B7", " Owner: Amanda")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: "right"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t4,
+      marginBottom: 2
+    }
+  }, "Overall Business Health"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 42,
+      fontWeight: 900,
+      color: C.org,
+      lineHeight: 1
+    }
+  }, "48", /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 16,
+      color: C.t4
+    }
+  }, "/100")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.org,
+      fontWeight: 600
+    }
+  }, "Good Foundation, Needs Direction")))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      background: C.s1,
+      borderBottom: "1px solid " + C.b1,
+      position: "sticky",
+      top: 0,
+      zIndex: 10
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 960,
+      margin: "0 auto",
+      display: "flex",
+      gap: 2,
+      overflowX: "auto",
+      padding: "0 24px"
+    }
+  }, tabs.map(function (t) {
+    var active = tab === t.id;
+    return /*#__PURE__*/React.createElement("button", {
+      key: t.id,
+      onClick: function () {
+        setTab(t.id);
+      },
+      style: {
+        padding: "12px 16px",
+        border: "none",
+        borderBottom: active ? "2px solid " + C.acc : "2px solid transparent",
+        background: "transparent",
+        color: active ? C.acc : C.t3,
+        fontSize: 12,
+        fontWeight: 600,
+        cursor: "pointer",
+        fontFamily: "inherit",
+        whiteSpace: "nowrap"
+      }
+    }, t.i, " ", t.l);
+  }))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      maxWidth: 960,
+      margin: "0 auto",
+      padding: "24px"
+    }
+  }, tab === "overview" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 16
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.accBg,
+      border: "1px solid rgba(91,108,240,0.15)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 16,
+      fontWeight: 700,
+      color: C.acc,
+      marginBottom: 6
+    }
+  }, "Amanda, your nail work is excellent and your clients love you (5.0 stars!). Let's make sure new customers can find you."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, "You have 19 Google reviews with a perfect 5-star rating and 669 Facebook followers \u2014 that's a great foundation. The challenge is that your Google profile, Yelp listing, and website SEO still point to your old Cassells Street address, and your website doesn't show pricing for most services. Fixing these things will connect your great reputation to your actual location and convert more browsers into bookings.")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "repeat(4, 1fr)",
+      gap: 12
+    }
+  }, [{
+    l: "Online Visibility",
+    s: 30,
+    i: "\u{1F310}"
+  }, {
+    l: "Customer Trust",
+    s: 75,
+    i: "\u2B50"
+  }, {
+    l: "Marketing",
+    s: 25,
+    i: "\u{1F4E3}"
+  }, {
+    l: "Growth Potential",
+    s: 80,
+    i: "\u{1F4C8}"
+  }].map(function (item) {
+    var col = item.s >= 70 ? C.grn : item.s >= 40 ? C.org : C.red;
+    return /*#__PURE__*/React.createElement(Card, {
+      key: item.l,
+      style: {
+        textAlign: "center",
+        padding: "16px"
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 24
+      }
+    }, item.i), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 28,
+        fontWeight: 900,
+        color: col,
+        margin: "4px 0"
+      }
+    }, item.s), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: C.t3,
+        fontWeight: 600
+      }
+    }, item.l));
+  })), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4CA}"
+  }, "Detailed Scores"), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Google Search Visibility",
+    score: 25
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Website Quality",
+    score: 35
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Social Media Presence",
+    score: 45
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Online Reviews",
+    score: 70
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Customer Experience",
+    score: 80
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Service Quality",
+    score: 85
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Competitive Pricing",
+    score: 60
+  }), /*#__PURE__*/React.createElement(ScoreBar, {
+    label: "Growth Potential",
+    score: 80
+  })), /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.redBg,
+      border: "1px solid " + C.redBd
+    }
+  }, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4B0}"
+  }, "What This Is Costing You"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "14px 16px",
+      borderRadius: 8,
+      background: "#fff",
+      border: "1px solid " + C.redBd
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.red,
+      fontWeight: 600,
+      textTransform: "uppercase",
+      letterSpacing: 1
+    }
+  }, "Monthly Lost Revenue"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 900,
+      color: C.red,
+      marginTop: 4
+    }
+  }, "$2,000 - $4,000"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.t3,
+      marginTop: 2
+    }
+  }, "From customers who can't find you online")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "14px 16px",
+      borderRadius: 8,
+      background: "#fff",
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.grn,
+      fontWeight: 600,
+      textTransform: "uppercase",
+      letterSpacing: 1
+    }
+  }, "Potential Recovery"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 900,
+      color: C.grn,
+      marginTop: 4
+    }
+  }, "$1,500 - $3,500"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.t3,
+      marginTop: 2
+    }
+  }, "With the fixes I'm proposing"))))), tab === "problems" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.redBg,
+      border: "1px solid " + C.redBd,
+      padding: "14px 20px"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      color: C.red,
+      fontWeight: 600
+    }
+  }, "These are real issues I found \u2014 not scare tactics. Let me show you each one.")), [{
+    sev: "CRITICAL",
+    title: "Old Address Showing in Google & Directories",
+    desc: "Your website's title tag (what Google reads) still says '1175 Cassells Street' even though your contact page shows 464 Lakeshore Drive. Your Yelp listing also shows the Cassells address. Your older Facebook page references Cassells too. This means Google is confused about where you actually are, and customers searching near Lakeshore might not find you.",
+    cost: "Customers near your actual location can't find you on Google Maps",
+    color: C.red
+  }, {
+    sev: "CRITICAL",
+    title: "Website Has Confusing Elements",
+    desc: "Your website at beyoutifulnails705.com has a few issues: The browser title/SEO tag still says '1175 Cassells Street' even though your contact section says 464 Lakeshore. There's a 'Bobby Fitness Studio' reference in the app download section. Most importantly — out of 18+ services listed, only Spray Tan ($50) and Misc ($20) show prices. All your core services (Acrylic Set, Gel Nails, Pedicure, Manicure) show no price. Customers comparison-shopping will skip you.",
+    cost: "30-50% of website visitors leaving without booking",
+    color: C.red
+  }, {
+    sev: "HIGH",
+    title: "Second Website Exists (beyoutifulnailsnorthbay.com)",
+    desc: "There's a second, more professional-looking website at beyoutifulnailsnorthbay.com that also shows your name, email, and phone number. It may have been created by a directory service or a previous web person. If you didn't create it, we should figure out who did. If you did, we should pick one site and redirect the other — having two confuses Google and splits your search ranking power.",
+    cost: "Google doesn't know which site is the real one — hurts search ranking",
+    color: C.org
+  }, {
+    sev: "HIGH",
+    title: "Two Facebook Pages Splitting Your Audience",
+    desc: "Your main Facebook page has 669 likes and 20 people talking about it — that's decent! But there's a second older page ('Beyoutiful Nails') with 50 likes still referencing the Cassells Street location. Having two pages confuses people and splits your followers. We should merge them into one strong page.",
+    cost: "Your 669 followers aren't all seeing your posts because engagement is split",
+    color: C.org
+  }, {
+    sev: "HIGH",
+    title: "Google Reviews Tied to Old Address",
+    desc: "Good news: you have 19 Google reviews with a perfect 5.0 star rating! That's amazing. The problem: these reviews are linked to your old 1175 Cassells Street listing. Your current location at 464 Lakeshore may not be getting the benefit of those reviews. We need to update or transfer the Google Business Profile to the correct address so new customers searching near Lakeshore see your perfect rating.",
+    cost: "Your 5-star reputation is invisible at your actual location",
+    color: C.org
+  }, {
+    sev: "MEDIUM",
+    title: "Instagram & TikTok Potential Untapped",
+    desc: "Nail art is one of the most viral content categories on social media. Time-lapse nail videos regularly get thousands of views. You have accounts but they're not being used consistently to attract new clients.",
+    cost: "Free marketing that competitors aren't doing either",
+    color: C.org
+  }, {
+    sev: "MEDIUM",
+    title: "Mobile Nail Service Not Promoted",
+    desc: "You offer mobile nails to Sturgeon Falls, Powassan, Mattawa and more — with travel fees of $20-50. This is a unique advantage NOBODY in North Bay is marketing. It's buried on your website where no one can find it.",
+    cost: "$500-1,500/month in untapped mobile service revenue",
+    color: C.org
+  }].map(function (p, i) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: i,
+      style: {
+        borderLeft: "4px solid " + p.color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
+        marginBottom: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        padding: "2px 8px",
+        borderRadius: 10,
+        fontWeight: 700,
+        letterSpacing: 1,
+        color: p.color,
+        background: p.color === C.red ? C.redBg : C.orgBg,
+        border: "1px solid " + (p.color === C.red ? C.redBd : C.orgBd)
+      }
+    }, p.sev)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 15,
+        fontWeight: 700,
+        color: C.t1,
+        marginBottom: 4
+      }
+    }, p.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        color: C.t2,
+        lineHeight: 1.7,
+        marginBottom: 8
+      }
+    }, p.desc), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: p.color,
+        fontWeight: 600,
+        padding: "6px 10px",
+        background: p.color === C.red ? C.redBg : C.orgBg,
+        borderRadius: 6,
+        display: "inline-block"
+      }
+    }, "Cost: ", p.cost));
+  })), tab === "solutions" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.grnBg,
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 700,
+      color: C.grn,
+      marginBottom: 4
+    }
+  }, "Everything below is FREE. You pay $0 for my time."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.6
+    }
+  }, "I'm building my portfolio and I believe in your business. The only costs are small things like printing review cards (~$10 at Staples). I'll handle all the work.")), [{
+    num: "1",
+    title: "New Website on Your Own Domain",
+    desc: "We'll build a clean, mobile-friendly website on a new domain you choose. All your other domains (beyoutifulnails705.com, etc.) will redirect to this one site. It'll have all your services with prices, a prominent Book Now button, and look professional on any device. Square stays as your payment gateway \u2014 we'll integrate payment links seamlessly.",
+    time: "Week 1-2",
+    cost: "~$15/year domain"
+  }, {
+    num: "2",
+    title: "Set Up Google Business Profile",
+    desc: "Claim your listing on Google. Add professional photos of your nail work, all services with prices, correct hours, and your current address at 464 Lakeshore. This is the single biggest thing we can do \u2014 it's how 70% of new customers find local businesses.",
+    time: "This week",
+    cost: "$0"
+  }, {
+    num: "3",
+    title: "Fix Google Business Profile Address",
+    desc: "You have a perfect 5.0 Google rating with 19 reviews \u2014 but it's tied to Cassells Street. We'll update the Google Business Profile to your current 464 Lakeshore address so people searching near you actually see your 5-star rating. We'll also update Yelp, Facebook, and any other directories.",
+    time: "Week 1-2",
+    cost: "$0"
+  }, {
+    num: "4",
+    title: "Automated Booking System",
+    desc: "Right now you're manually taking info from clients and adding it to your calendar. We'll set up an online booking system where clients pick a service, choose a time, and book instantly. It syncs to your phone calendar automatically. Clients get a confirmation text/email. You get a notification. No more back-and-forth messages.",
+    time: "Week 1-2",
+    cost: "$0 (free tier)"
+  }, {
+    num: "5",
+    title: "Digital Loyalty Points Card (No Physical Cards)",
+    desc: "Square has a built-in loyalty program where clients just give their phone number at checkout \u2014 no app download needed, no physical punch cards. Points are tracked automatically. Example: client earns 1 point per visit, after 10 visits they get $10 off. They can check their points anytime from their phone. This is a paid Square feature: $60/month, but comes with a free 30-day trial so you can test it first. If it doesn't feel worth it, we can build a simpler version into your website at no monthly cost. We'll figure out what works best for you.",
+    time: "Week 2-3",
+    cost: "Square: ~$60/mo (30-day free trial) OR custom: $0"
+  }, {
+    num: "6",
+    title: "Digital Gift Cards (100% Online, Works with Apple/Google Wallet)",
+    desc: "Clients buy gift cards directly from your website or in-store. They choose an amount, pay with their credit card, and the gift card gets sent instantly by email or text to whoever they choose. The recipient can add it to their Apple Wallet or Google Wallet on their phone \u2014 no physical card needed. When they come in, you scan the barcode from their phone screen. That's it. Here's how the fees work in plain English:",
+    time: "Week 2-3",
+    cost: "Setup: $0 \u2014 see fee breakdown below"
+  }, {
+    num: "7",
+    title: "Merge Facebook Pages & Review System",
+    desc: "Combine your two Facebook pages into one strong page with 700+ followers. Set up Google review QR code cards to hand to every happy client.",
+    time: "Week 1",
+    cost: "~$10 to print cards"
+  }, {
+    num: "8",
+    title: "Instagram Content Strategy",
+    desc: "Set up a simple posting schedule: Monday (nail art close-up), Wednesday (time-lapse transformation video), Friday (client spotlight). I'll teach you how to film 15-second clips with your phone.",
+    time: "Week 2",
+    cost: "~$20 for phone tripod"
+  }].map(function (s, i) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: i
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 14
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 36,
+        height: 36,
+        borderRadius: "50%",
+        background: C.accBg,
+        border: "1px solid rgba(91,108,240,0.15)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 15,
+        fontWeight: 800,
+        color: C.acc,
+        flexShrink: 0
+      }
+    }, s.num), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 15,
+        fontWeight: 700
+      }
+    }, s.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        padding: "2px 8px",
+        borderRadius: 8,
+        background: C.grnBg,
+        color: C.grn,
+        fontWeight: 600,
+        border: "1px solid " + C.grnBd
+      }
+    }, s.cost), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        padding: "2px 8px",
+        borderRadius: 8,
+        background: C.s2,
+        color: C.t3,
+        fontWeight: 600
+      }
+    }, s.time))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        color: C.t2,
+        lineHeight: 1.7
+      }
+    }, s.desc))));
+  }), /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: "#FFFBEB",
+      border: "1px solid " + C.orgBd
+    }
+  }, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4B3}"
+  }, "How Payments & Fees Work (Plain English)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: C.t1
+    }
+  }, "Square remains your payment processor."), " All money flows directly to your Square account. I never touch your money. Here's exactly what each feature costs you \\u2014 no surprises:"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 10
+    }
+  }, [{
+    label: "Square Payments (what you already use)",
+    fee: "You already pay this",
+    example: "When a client taps or swipes their card in your salon, Square takes 2.6% + $0.10. On a $60 acrylic set, that's $1.66 to Square, $58.34 to you. Nothing changes here.",
+    color: C.grn
+  }, {
+    label: "Online Booking (Square Appointments \u2014 Free Plan)",
+    fee: "$0/month for solo users",
+    example: "Clients book from your website or phone. They pick a service, choose a time, and it goes straight to your calendar. You and the client both get a text/email confirmation. Free for one person (you). If you hire staff later, it's $49/month.",
+    color: C.grn
+  }, {
+    label: "Digital Gift Cards (Square eGift Cards)",
+    fee: "No monthly fee \u2014 small fee per sale",
+    example: "A client buys a $50 gift card online for their friend. Square takes approximately $2.65 total (that's the 2.8% + $0.30 processing fee, plus a 2.5% load fee). You receive $47.35. The recipient gets the gift card by email or text and can add it to their Apple Wallet or Google Wallet. When they come in, you scan the barcode on their phone. No physical cards needed.",
+    color: C.acc
+  }, {
+    label: "Digital Loyalty Points (Square Loyalty)",
+    fee: "~$60/month (optional \u2014 30-day free trial)",
+    example: "Client gives their phone number at checkout. They earn points automatically. After enough points, they get a reward (like $10 off). Everything is digital \u2014 no stamp cards, no apps to download. If $60/month feels too much right now, we can start with the free trial and decide after 30 days. Or I can build a simpler version into your website at no monthly cost.",
+    color: C.org
+  }, {
+    label: "QR Code Review Cards",
+    fee: "~$10 one-time (printing)",
+    example: "I design the card for free in Canva with a QR code linking to your Google review page. You get them printed at Staples or Walmart Photo. Hand one to every happy client. They scan it with their phone camera and leave a review in 30 seconds.",
+    color: C.grn
+  }, {
+    label: "New Domain Name",
+    fee: "~$15-20/year",
+    example: "You pick a new clean domain name (like beyoutifulnails.ca or similar). You pay for it once a year. All your old domains redirect to this one. I handle the technical setup.",
+    color: C.grn
+  }, {
+    label: "Facebook/Instagram Ads (only when you're ready)",
+    fee: "You set the budget \u2014 $5 to $10/day",
+    example: "This is 100% optional and only when you decide. You control the budget from your phone. $5/day = $150/month. Facebook shows your nail work to local women interested in beauty. You can pause or stop anytime with one tap. I set it up and manage it; you approve everything.",
+    color: C.org
+  }].map(function (item, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        padding: "14px 16px",
+        borderRadius: 8,
+        background: "#fff",
+        border: "1px solid " + C.b1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        fontWeight: 700,
+        color: C.t1
+      }
+    }, item.label), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11,
+        padding: "3px 10px",
+        borderRadius: 8,
+        fontWeight: 700,
+        background: item.color === C.grn ? C.grnBg : item.color === C.org ? C.orgBg : C.accBg,
+        color: item.color,
+        border: "1px solid " + (item.color === C.grn ? C.grnBd : item.color === C.org ? C.orgBd : "rgba(91,108,240,0.15)")
+      }
+    }, item.fee)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: C.t2,
+        lineHeight: 1.7,
+        padding: "8px 12px",
+        background: C.s2,
+        borderRadius: 6
+      }
+    }, item.example));
+  }))), /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.grnBg,
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4F1}"
+  }, "Everything Works on Your Phone"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: C.t1
+    }
+  }, "For you (Amanda):"), " The Square app on your phone is your command center. You'll see bookings, payments, loyalty points, gift card sales, and your calendar all in one place. When a client books online, your phone buzzes. When someone buys a gift card, you see it instantly. No laptop needed for day-to-day management."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7,
+      marginTop: 10
+    }
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      color: C.t1
+    }
+  }, "For your clients:"), " They book from their phone browser (no app to download). Gift cards land in their email/text and can be saved to Apple Wallet or Google Wallet with one tap. Loyalty points are tracked by phone number \\u2014 they just give their number when they pay. Everything is seamless and modern, and it makes your salon feel like a premium experience.")), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4CA}"
+  }, "Monthly Cost Summary (What You'd Pay)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, [{
+    item: "My services (Phase 1 \u2014 Foundation)",
+    cost: "FREE",
+    note: "My labor at no charge",
+    color: C.grn
+  }, {
+    item: "Square Payments processing",
+    cost: "Already paying",
+    note: "No change to your current fees",
+    color: C.grn
+  }, {
+    item: "Square Appointments (solo booking)",
+    cost: "FREE",
+    note: "Included with your Square account",
+    color: C.grn
+  }, {
+    item: "Square eGift Cards",
+    cost: "~$0-5/month",
+    note: "Only charged when gift cards are sold (small % per sale)",
+    color: C.grn
+  }, {
+    item: "New domain name",
+    cost: "~$1.50/month",
+    note: "$15-20/year paid annually",
+    color: C.grn
+  }, {
+    item: "Review card printing (one-time)",
+    cost: "~$10 once",
+    note: "Print at Staples or Walmart",
+    color: C.grn
+  }, {
+    item: "Phone tripod (one-time)",
+    cost: "~$20 once",
+    note: "For filming nail art videos",
+    color: C.grn
+  }, {
+    item: "Square Loyalty (optional)",
+    cost: "~$60/month",
+    note: "30-day free trial first \u2014 cancel anytime if not worth it",
+    color: C.org
+  }, {
+    item: "Facebook/Instagram ads (optional)",
+    cost: "$150-300/month",
+    note: "Only when you're ready \u2014 you control the budget",
+    color: C.org
+  }].map(function (row, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        padding: "8px 12px",
+        borderRadius: 6,
+        background: i % 2 === 0 ? C.s2 : "#fff"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        flex: 1,
+        fontSize: 13,
+        color: C.t1,
+        fontWeight: 500
+      }
+    }, row.item), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 12,
+        fontWeight: 700,
+        color: row.color,
+        minWidth: 100,
+        textAlign: "right"
+      }
+    }, row.cost), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 11,
+        color: C.t4,
+        minWidth: 200
+      }
+    }, row.note));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 14,
+      padding: "10px 14px",
+      borderRadius: 8,
+      background: C.grnBg,
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.grn,
+      fontWeight: 700
+    }
+  }, "Bottom line for Phase 1: Your out-of-pocket cost is approximately $30-50 total (domain + printing + tripod). My time is free. Everything else is either free or only costs money when it makes you money (like gift card fees only apply when someone buys a gift card).")))), tab === "growth" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 14
+    }
+  }, [{
+    phase: "Phase 1: Foundation (Week 1-2)",
+    color: C.red,
+    items: ["Fix website issues (address, pricing, Bobby Fitness reference)", "Set up and optimize Google Business Profile", "Choose ONE primary website, redirect the other", "Merge duplicate Facebook pages", "Start collecting Google reviews with QR code cards"]
+  }, {
+    phase: "Phase 2: Visibility (Week 3-4)",
+    color: C.org,
+    items: ["Begin consistent Instagram/TikTok posting (3x/week)", "Launch mobile nail service promotion for surrounding towns", "Clean up all online directory listings (Yelp, Yellow Pages, etc.)", "Create bridal/event nail packages for wedding season", "Aim for 15-20 Google reviews by end of month"]
+  }, {
+    phase: "Phase 3: Growth (Month 2-3)",
+    color: C.acc,
+    items: ["Set up AI booking chatbot (answers questions 24/7)", "Launch first small Facebook/Instagram ad campaign ($5-10/day)", "Create loyalty program for returning clients", "Partner with local bridal shops and event planners", "Evaluate launching eyelash extension service"]
+  }, {
+    phase: "Phase 4: Scale (Month 3-6)",
+    color: C.grn,
+    items: ["Analyze what's working, double down on best channels", "Expand retail nail supply offerings", "Target 50+ Google reviews and 1,000+ social followers", "Consider hiring additional nail tech based on demand", "Explore automated email/text marketing for client retention"]
+  }].map(function (phase, i) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: i,
+      style: {
+        borderLeft: "4px solid " + phase.color
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 12
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        width: 28,
+        height: 28,
+        borderRadius: "50%",
+        background: phase.color + "12",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: 14,
+        fontWeight: 800,
+        color: phase.color
+      }
+    }, i + 1), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 15,
+        fontWeight: 700
+      }
+    }, phase.phase)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        flexDirection: "column",
+        gap: 6,
+        paddingLeft: 38
+      }
+    }, phase.items.map(function (item, j) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: j,
+        style: {
+          display: "flex",
+          gap: 8,
+          fontSize: 13,
+          color: C.t2,
+          lineHeight: 1.5
+        }
+      }, /*#__PURE__*/React.createElement("span", {
+        style: {
+          color: phase.color,
+          flexShrink: 0
+        }
+      }, "\u25B8"), /*#__PURE__*/React.createElement("span", null, item));
+    })));
+  })), tab === "ai" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.purBg,
+      border: "1px solid rgba(128,90,213,0.15)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 700,
+      color: C.pur,
+      marginBottom: 4
+    }
+  }, "How AI Can Help Your Nail Business"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, "AI isn't about replacing you \u2014 it's about handling the stuff you shouldn't have to do manually while you focus on what you're great at: making beautiful nails.")), [{
+    title: "AI Booking Assistant (Chatbot)",
+    icon: "\u{1F916}",
+    desc: "A chatbot on your website and Instagram that answers client questions 24/7. When someone messages at 11pm asking 'how much for a full acrylic set with nail art?' — the AI answers instantly with accurate pricing and a direct booking link. You never miss a booking while you're mid-acrylic.",
+    benefit: "Captures bookings you're currently missing when you can't answer the phone",
+    phase: "Phase 3"
+  }, {
+    title: "Automated Appointment Reminders",
+    icon: "\u{1F4F2}",
+    desc: "Automatic text/email reminders sent 24 hours before each appointment. Reduces no-shows dramatically. Also sends 'We miss you!' messages to clients who haven't booked in 4+ weeks.",
+    benefit: "Reduces no-shows by up to 15% — that's real money saved",
+    phase: "Phase 2-3"
+  }, {
+    title: "AI Nail Art Inspiration Tool",
+    icon: "\u{1F3A8}",
+    desc: "Use AI image tools to generate nail art design ideas and mood boards. Show clients options on a tablet before they sit down. Create unique designs that stand out on social media. You can even use AI to help create Instagram content ideas and captions.",
+    benefit: "Positions you as the creative, tech-forward salon in North Bay",
+    phase: "Phase 3"
+  }, {
+    title: "Smart Calendar Sync",
+    icon: "\u{1F4C5}",
+    desc: "Connect your booking system to Google Calendar and Apple Calendar so you see everything in one place. Never double-book. Block off personal time that automatically shows as unavailable online.",
+    benefit: "No more scheduling confusion — everything syncs automatically",
+    phase: "Phase 2"
+  }, {
+    title: "Review & Reputation Monitor",
+    icon: "\u{2B50}",
+    desc: "AI monitors your Google, Yelp, and Facebook reviews. Alerts you when a new review comes in. Suggests response templates. Flags negative reviews immediately so you can respond fast.",
+    benefit: "Stay on top of your reputation without checking 5 platforms daily",
+    phase: "Phase 3"
+  }].map(function (tool, i) {
+    return /*#__PURE__*/React.createElement(Card, {
+      key: i
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        gap: 14
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 28,
+        flexShrink: 0
+      }
+    }, tool.icon), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 4
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 15,
+        fontWeight: 700
+      }
+    }, tool.title), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        padding: "2px 8px",
+        borderRadius: 8,
+        background: C.accBg,
+        color: C.acc,
+        fontWeight: 600
+      }
+    }, tool.phase)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        color: C.t2,
+        lineHeight: 1.7,
+        marginBottom: 6
+      }
+    }, tool.desc), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: C.grn,
+        fontWeight: 600,
+        padding: "4px 10px",
+        background: C.grnBg,
+        borderRadius: 6,
+        display: "inline-block"
+      }
+    }, "\u2192", " ", tool.benefit))));
+  })), tab === "ads" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4F1}"
+  }, "Facebook & Instagram Ads \u2014 Simple Breakdown"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7,
+      marginBottom: 14
+    }
+  }, "You don't need a big budget. Even $5-10/day can make a real difference for a local nail salon. Here's how it works in plain English:"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 10
+    }
+  }, [{
+    q: "How much does it cost?",
+    a: "You set the budget. $5/day = $150/month. $10/day = $300/month. You can pause anytime. Facebook will never charge more than your daily limit."
+  }, {
+    q: "Who sees the ads?",
+    a: "We target women aged 18-55 within 30km of North Bay who are interested in nail art, beauty, and self-care. Facebook knows who these people are based on their activity."
+  }, {
+    q: "What do the ads look like?",
+    a: "A beautiful photo of your best nail work + a short caption like 'Book your next set at BeYOUtiful Nails \u2014 Same-day appointments available!' with a Book Now button that goes straight to your Wix booking page."
+  }, {
+    q: "Where do they appear?",
+    a: "On people's Facebook feed, Instagram feed, Instagram Stories, and Instagram Reels. You pick which platforms you want."
+  }, {
+    q: "How do I know it's working?",
+    a: "Facebook shows you exactly: how many people saw the ad, how many clicked, and how many booked. I'll set up a simple dashboard you can check anytime."
+  }, {
+    q: "Can I manage it myself?",
+    a: "Yes! I'll teach you how. Facebook Ads Manager is on your phone. You can pause, adjust budget, or change the ad photo anytime. Or I can manage it for you."
+  }].map(function (item, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        padding: "12px 16px",
+        borderRadius: 8,
+        background: C.s2,
+        border: "1px solid " + C.b1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        fontWeight: 700,
+        color: C.acc,
+        marginBottom: 4
+      }
+    }, item.q), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 13,
+        color: C.t2,
+        lineHeight: 1.6
+      }
+    }, item.a));
+  }))), /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: C.grnBg,
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4B0}"
+  }, "The Math That Matters"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr 1fr",
+      gap: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px",
+      borderRadius: 8,
+      background: "#fff",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t4,
+      fontWeight: 600,
+      marginBottom: 4
+    }
+  }, "Ad Spend"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: C.t1
+    }
+  }, "$150"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t3
+    }
+  }, "per month ($5/day)")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px",
+      borderRadius: 8,
+      background: "#fff",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t4,
+      fontWeight: 600,
+      marginBottom: 4
+    }
+  }, "Expected New Clients"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: C.acc
+    }
+  }, "8-15"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t3
+    }
+  }, "per month")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "12px",
+      borderRadius: 8,
+      background: "#fff",
+      textAlign: "center"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t4,
+      fontWeight: 600,
+      marginBottom: 4
+    }
+  }, "Revenue from Those Clients"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 20,
+      fontWeight: 900,
+      color: C.grn
+    }
+  }, "$400-900"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: C.t3
+    }
+  }, "at $50-60 avg service"))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12,
+      fontSize: 14,
+      fontWeight: 700,
+      color: C.grn,
+      textAlign: "center"
+    }
+  }, "That's a 3-6x return on every dollar you spend on ads")), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4F8}"
+  }, "Free Marketing (No Ad Spend Needed)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, "Before spending any money on ads, there's a lot you can do for free that will bring in clients:"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+      marginTop: 10
+    }
+  }, ["Post nail art time-lapse videos on Instagram Reels and TikTok 3x/week — nail content goes viral easily", "Share before/after transformations on Instagram Stories with 'Book Now' link", "Post client spotlights (with permission) — tag them, they share to their friends", "Use local hashtags: #NorthBayNails #NorthBayON #NipissingSpa #BeYOUtiful", "Join North Bay community Facebook groups and engage genuinely (don't spam)", "Cross-promote: link Instagram from Facebook, TikTok from Instagram, etc."].map(function (tip, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: "flex",
+        gap: 8,
+        fontSize: 13,
+        color: C.t2,
+        lineHeight: 1.5,
+        padding: "6px 10px",
+        background: C.s2,
+        borderRadius: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: C.grn,
+        flexShrink: 0
+      }
+    }, "\u2713"), /*#__PURE__*/React.createElement("span", null, tip));
+  })))), tab === "transparency" && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 14
+    }
+  }, /*#__PURE__*/React.createElement(Card, {
+    style: {
+      background: "#F0FFF4",
+      border: "1px solid " + C.grnBd
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 15,
+      fontWeight: 700,
+      color: C.grn,
+      marginBottom: 6
+    }
+  }, "Amanda, you asked for transparency. Here it is."), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, "I want you to understand exactly what I'm doing, why I'm doing it, and what tools I'm using. No black boxes. No mystery. If you want to learn how to do any of this yourself, I'll teach you.")), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F504}"
+  }, "What We're Changing (With Your Approval)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 8
+    }
+  }, [{
+    title: "Booking System: Manual \u2192 Automated",
+    now: "You currently take client info by phone/message and manually add it to your calendar.",
+    plan: "We'll set up an online booking system that syncs directly to your calendar. Clients pick a time, it books automatically, and both you and the client get a confirmation. No more back-and-forth texting to find a time slot. You'll also get automatic reminders sent to clients 24hrs before their appointment to reduce no-shows.",
+    color: C.acc
+  }, {
+    title: "Domain: Multiple Sites \u2192 One Clean Domain",
+    now: "You currently have beyoutifulnails705.com, beyoutifulnailsnorthbay.com, and different links on Yelp and Facebook.",
+    plan: "We'll pick one primary domain name (you said you're open to a new one). All other domains will redirect to it automatically. One website, one address, one brand. Google will rank you higher because of the consistency.",
+    color: C.acc
+  }, {
+    title: "Facebook: Two Pages \u2192 One Strong Page",
+    now: "You have two Facebook pages (669 likes + 50 likes) splitting your audience.",
+    plan: "We'll merge them into one page so all 700+ followers are in one place. Your posts will reach more people, and your page will look more established to new visitors.",
+    color: C.acc
+  }, {
+    title: "Loyalty: No System \u2192 Digital Points Card",
+    now: "No loyalty or rewards program currently in place.",
+    plan: "We'll build a digital points card system right into your website. Clients earn points with each visit and can redeem them for discounts or free add-ons. No physical punch cards to lose \u2014 everything tracked digitally. This keeps clients coming back and gives you data on visit frequency.",
+    color: C.grn
+  }, {
+    title: "Gift Cards: Physical \u2192 Digital",
+    now: "Gift cards are currently handled manually or through Wix.",
+    plan: "We'll set up a proper digital gift card system on your new website. Clients can buy gift cards online, send them to friends via email or text, and recipients redeem them when booking. Great for holidays, birthdays, and Mother's Day \u2014 zero manual work on your end.",
+    color: C.grn
+  }, {
+    title: "Everything: Scattered \u2192 One Mobile Dashboard",
+    now: "You currently manage bookings, payments, social media, and client info across multiple apps and manual methods.",
+    plan: "We'll bring everything together into a clean mobile-friendly system. Bookings, client history, loyalty points, gift cards, appointment reminders, and your calendar \u2014 all accessible from your phone in one place. Square stays as your payment processor \u2014 we'll integrate everything to work around it.",
+    color: C.pur
+  }].map(function (item, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        padding: "14px 16px",
+        borderRadius: 8,
+        background: C.s2,
+        border: "1px solid " + C.b1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 14,
+        fontWeight: 700,
+        color: item.color,
+        marginBottom: 8
+      }
+    }, item.title), /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr",
+        gap: 10
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 12px",
+        borderRadius: 6,
+        background: C.redBg,
+        border: "1px solid " + C.redBd
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        color: C.red,
+        textTransform: "uppercase",
+        letterSpacing: 1,
+        marginBottom: 3
+      }
+    }, "Currently"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: C.t2,
+        lineHeight: 1.5
+      }
+    }, item.now)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: "8px 12px",
+        borderRadius: 6,
+        background: C.grnBg,
+        border: "1px solid " + C.grnBd
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 10,
+        fontWeight: 700,
+        color: C.grn,
+        textTransform: "uppercase",
+        letterSpacing: 1,
+        marginBottom: 3
+      }
+    }, "After"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: C.t2,
+        lineHeight: 1.5
+      }
+    }, item.plan))));
+  }))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F512}"
+  }, "What Stays Yours (I Won't Touch)"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, ["Square remains your payment processor \u2014 all money continues flowing directly to your Square account", "Your client relationships \u2014 I will never contact your clients directly or access personal client data", "Your domain names \u2014 you own them, they stay registered in your name", "Your social media accounts \u2014 I'll work with you or you can give limited access that you revoke anytime", "Your creative decisions \u2014 you approve every post, every design, every change before it goes live"].map(function (item, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: "flex",
+        gap: 8,
+        fontSize: 13,
+        color: C.t2,
+        padding: "8px 12px",
+        background: C.grnBg,
+        borderRadius: 6,
+        border: "1px solid " + C.grnBd
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: C.grn,
+        flexShrink: 0
+      }
+    }, "\u{1F512}"), /*#__PURE__*/React.createElement("span", null, item));
+  }))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F6E0}\uFE0F"
+  }, "Tools & Systems"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "grid",
+      gridTemplateColumns: "1fr 1fr",
+      gap: 8
+    }
+  }, [{
+    tool: "Square Payments",
+    cost: "Already using",
+    what: "Your payment gateway \u2014 stays exactly as-is"
+  }, {
+    tool: "Square Appointments",
+    cost: "Free (solo plan)",
+    what: "Automated online booking, calendar sync, reminders"
+  }, {
+    tool: "Square eGift Cards",
+    cost: "Free setup + ~3% per sale",
+    what: "Digital gift cards clients buy and send online"
+  }, {
+    tool: "Square Loyalty",
+    cost: "~$60/mo (optional)",
+    what: "Digital points card \u2014 we'll discuss if this fits your budget"
+  }, {
+    tool: "Google Business Profile",
+    cost: "Free",
+    what: "Get you visible on Google search and maps"
+  }, {
+    tool: "New Domain Name",
+    cost: "~$15-20/year",
+    what: "One clean domain for your brand"
+  }, {
+    tool: "Canva",
+    cost: "Free",
+    what: "Design review QR cards and social media graphics"
+  }, {
+    tool: "Instagram / TikTok / Facebook",
+    cost: "Free",
+    what: "Post nail art content to attract clients"
+  }, {
+    tool: "Facebook/Instagram Ads",
+    cost: "$5-10/day (optional)",
+    what: "Only when you're ready \u2014 you control the budget"
+  }, {
+    tool: "Smart Booking Assistant",
+    cost: "Free up to 50 chats/mo",
+    what: "Answers client questions and books appointments 24/7"
+  }].map(function (t, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        padding: "10px 14px",
+        borderRadius: 8,
+        background: C.s2,
+        border: "1px solid " + C.b1
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginBottom: 2
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        fontWeight: 700,
+        color: C.t1
+      }
+    }, t.tool), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 10,
+        padding: "1px 6px",
+        borderRadius: 6,
+        background: t.cost === "Free" || t.cost === "Already using" || t.cost.indexOf("Included") !== -1 ? C.grnBg : C.orgBg,
+        color: t.cost === "Free" || t.cost === "Already using" || t.cost.indexOf("Included") !== -1 ? C.grn : C.org,
+        fontWeight: 600
+      }
+    }, t.cost)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: C.t3
+      }
+    }, t.what));
+  }))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F4AC}"
+  }, "Why I'm Doing This for Free"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: C.t2,
+      lineHeight: 1.7
+    }
+  }, "I'm a recent Nipissing University graduate building my digital services business right here in North Bay. I genuinely want to help local businesses grow with technology. Phase 1 is free because:"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6,
+      marginTop: 10
+    }
+  }, ["I need real case studies and testimonials to build my portfolio", "If the results are good, I'd love for you to recommend me to other business owners", "I believe in your work \u2014 your nails are beautiful, you just need the right systems behind you", "If we work well together, there are paid tiers with more advanced features we can explore \u2014 but only if you see value first"].map(function (reason, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: "flex",
+        gap: 8,
+        fontSize: 13,
+        color: C.t2,
+        padding: "6px 10px"
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: C.acc,
+        flexShrink: 0
+      }
+    }, "\u25B8"), /*#__PURE__*/React.createElement("span", null, reason));
+  }))), /*#__PURE__*/React.createElement(Card, null, /*#__PURE__*/React.createElement(SectionTitle, {
+    icon: "\u{1F91D}"
+  }, "What I'd Ask From You"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: "flex",
+      flexDirection: "column",
+      gap: 6
+    }
+  }, ["Share your current domain login so I can set up the new website and redirects", "Verify the Google Business Profile when I set it up (Google sends a verification email or postcard)", "Let me know your Square setup so I can integrate payment links properly", "Hand QR review cards to clients and ask for Google reviews", "Post 2-3 nail art photos/videos per week (I'll teach you how and provide the schedule)", "Give me an honest testimonial after 30 days if you're happy with the results"].map(function (ask, i) {
+    return /*#__PURE__*/React.createElement("div", {
+      key: i,
+      style: {
+        display: "flex",
+        gap: 8,
+        fontSize: 13,
+        color: C.t2,
+        padding: "8px 12px",
+        background: C.s2,
+        borderRadius: 6
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: C.acc,
+        flexShrink: 0
+      }
+    }, i + 1 + "."), /*#__PURE__*/React.createElement("span", null, ask));
+  }))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: "20px 24px",
+      textAlign: "center",
+      borderTop: "1px solid " + C.b1,
+      marginTop: 20
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: C.t4
+    }
+  }, "Prepared for Amanda \u2014 BeYOUtiful Nails 705 ", "\u00B7", " Wednesday Consultation ", "\u00B7", " Free Business Diagnostic")));
+}
+ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ConsultationDashboard));
+
+</script>
+</body>
+</html>
